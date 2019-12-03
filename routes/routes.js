@@ -1,6 +1,7 @@
-
+const { readAll } = require('../model/readAllFiles')
 module.exports = (server) => {
   server.get('/', async (req, res) => {
-    res.json({hello: 'world'})
+    const files = await readAll()
+    res.json({hello: files})
   })
 }
