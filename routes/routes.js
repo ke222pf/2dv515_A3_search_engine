@@ -6,4 +6,8 @@ module.exports = (server) => {
     const wordId = getWordId(searched)
     res.json({hello: wordId})
   })
+  server.get('/', async (req, res) => {
+    const files = await readAll()
+    res.json({hello: files})
+  })
 }
