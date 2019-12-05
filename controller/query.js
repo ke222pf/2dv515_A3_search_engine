@@ -12,7 +12,6 @@ const query = (query) => {
   pageObject.forEach(p => {
     scores.push({url: p.url, score: frequency(p, qws)})
   })
-  // let scoresArr = Object.values(scores.score)
 
   let scoresNormalized = normalizeBig(scores.map(xs => xs.score))
   for (let i = 0; i < scoresNormalized.length; i++) {
@@ -21,8 +20,9 @@ const query = (query) => {
 
   let sorted = scores.sort((a, b) => parseFloat(a.score) - parseFloat(b.score))
   let top5 = sorted.slice(sorted.length - 5, sorted.length)
-  console.log(top5)
+  console.log(top5.reverse())
 
+  return top5
 // //Normalize scores
 // normalize(scores.content, false)
 // normalize(scores.location, true)
