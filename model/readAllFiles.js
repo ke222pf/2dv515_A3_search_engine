@@ -2,11 +2,11 @@ const fs = require('fs')
 const pPath = './model/wikipedia/Words/Programming'
 const gPath = './model/wikipedia/Words/Games'
 
-let id = 0;
+let id = 0
 let wo = {}
 
 const getWordId = (word) => {
-  if(wo[word]) return wo[word]
+  if (wo[word]) return wo[word]
   else {
     wo[word] = id++
     return id
