@@ -1,6 +1,7 @@
 const {readAll, getWordId} = require('../model/readAllFiles')
 const {frequency} = require('../model/frequencyScore')
-const {normalizeBig} = require('../model/normalize')
+const {normalizeBig, normalizeSmall} = require('../model/normalize')
+const {documentLocation} = require('../model/documentLocation')
 
 const query = (query) => {
   let scores = []
@@ -10,19 +11,26 @@ const query = (query) => {
   })
 
   pageObject.forEach(p => {
-    scores.push({url: p.url, score: frequency(p, qws)})
+    scores.push({url: p.url, totalScore: 0, wFscore: frequency(p, qws), dLscore: documentLocation(p, qws)})
   })
 
-  let scoresNormalized = normalizeBig(scores.map(xs => xs.score))
-  for (let i = 0; i < scoresNormalized.length; i++) {
-    scores[i].score = scoresNormalized[i]
+  let wFscoresNormalized = normalizeBig(scores.map(xs => xs.wFscore))
+  for (let i = 0; i < wFscoresNormalized.length; i++) {
+    scores[i].wFscore = wFscoresNormalized[i]
   }
+  let dLscoresNormalized = normalizeSmall(scores.map(xs => xs.dLscore))
+  for (let i = 0; i < dLscoresNormalized.length; i++) {
+    scores[i].dLscore = dLscoresNormalized[i]
+  }
+  scores.forEach(score => {
+    score.totalScore = score.wFscore + 0.8 * score.dLscore
+  })
 
-  let sorted = scores.sort((a, b) => parseFloat(a.score) - parseFloat(b.score))
+  let sorted = scores.sort((a, b) => parseFloat(a.totalScore) - parseFloat(b.totalScore))
   let top5 = sorted.slice(sorted.length - 5, sorted.length)
-  console.log(top5.reverse())
 
   return top5
+
 // //Normalize scores
 // normalize(scores.content, false)
 // normalize(scores.location, true)
