@@ -23,30 +23,16 @@ const query = (query) => {
     scores[i].dLscore = dLscoresNormalized[i]
   }
   scores.forEach(score => {
-    score.totalScore = score.wFscore + 0.8 * score.dLscore
+    score.totalScore = score.wFscore + (score.dLscore * 0.8)
+    score.dLscore = score.dLscore * 0.8
   })
 
   let sorted = scores.sort((a, b) => parseFloat(a.totalScore) - parseFloat(b.totalScore))
-  let top5 = sorted.slice(sorted.length - 5, sorted.length)
+  let top5 = sorted.slice(sorted.length - 5, sorted.length).reverse()
 
   return top5
-
-// //Normalize scores
-// normalize(scores.content, false)
-// normalize(scores.location, true)
-// //Generate result list
-// for (i = 0 to pagedb.noPages())
-// Page p = pagedb.get(i)
-// //Only include results where the word appears at least once
-// for (scores.content[i] > 0)
-// //Calculate sum of weighted scores
-// double score = 1.0 * scores.content[i] + 0.5 *
-// scores.location[i]
-// result.add(Score(p, score))
-// //Sort result list with highest score first
-// sort(result)
-// Return result
 }
+
 module.exports = {
   query
 }

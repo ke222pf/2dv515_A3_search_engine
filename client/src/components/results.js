@@ -26,7 +26,7 @@ export default function Results () {
 
     console.log(event.target.value)
   }
-  const onSubmit = async () => {
+  const onSubmit = async (event) => {
     getData().then(res => {
       setResult(res)
     })
@@ -38,7 +38,9 @@ export default function Results () {
         <TableRow key={index}>
 
           <TableCell align='right'>{<a href={`www.${x.url}`}>{x.url}</a>}</TableCell>
-          <TableCell align='right'>{x.score}</TableCell>
+          <TableCell align='right'>{x.totalScore.toFixed(2)}</TableCell>
+          <TableCell align='right'>{x.wFscore.toFixed(2)}</TableCell>
+          <TableCell align='right'>{x.dLscore.toFixed(2)}</TableCell>
         </TableRow>
               ))
     }
